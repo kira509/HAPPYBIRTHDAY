@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Bestie Birthday Experience ⚡</title>
+    <title>Bestie Birthday Experience ⚡</title>
     <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     
@@ -68,7 +68,6 @@
             flex-direction: column;
             background-size: cover;
             background-position: center;
-            /* REPLACE URL BELOW */
             background-image: url('Bestie.jpg'); 
         }
         
@@ -76,7 +75,7 @@
             content: "";
             position: absolute;
             inset: 0;
-            background: rgba(0, 0, 0, 0.7); /* Darkens her photo slightly */
+            background: rgba(0, 0, 0, 0.7);
             z-index: -1;
         }
 
@@ -106,7 +105,7 @@
 
         h1 {
             font-family: 'Syncopate';
-            font-size: clamp(2rem, 10vw, 5rem);
+            font-size: clamp(2.5rem, 10vw, 5rem);
             margin: 0;
             background: linear-gradient(to right, var(--neon-pink), var(--neon-blue));
             -webkit-background-clip: text;
@@ -143,6 +142,7 @@
             object-fit: cover;
         }
 
+        /* --- GIFTS SECTION --- */
         .gift-section {
             padding: 100px 0;
             text-align: center;
@@ -157,19 +157,38 @@
             line-height: 150px;
             font-size: 3rem;
             cursor: pointer;
-            transition: 0.3s;
+            transition: 0.4s;
         }
 
-        .gift-box:hover {
-            transform: bounce;
-            background: rgba(255, 0, 255, 0.1);
+        .disabled-gift {
+            filter: grayscale(1);
+            opacity: 0.2;
+            cursor: not-allowed !important;
+            pointer-events: none;
+        }
+
+        /* --- TYPEWRITER SECTION --- */
+        .letter-section {
+            padding: 100px 20px;
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: left;
+            min-height: 500px;
+        }
+
+        #typewriter {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: var(--neon-blue);
+            text-shadow: 0 0 5px rgba(0, 242, 255, 0.3);
+            white-space: pre-wrap;
         }
     </style>
 </head>
 <body>
 
     <audio id="bday-music" loop>
-        <source src="YOUR_MUSIC_FILE.mp3" type="audio/mpeg">
+        <source src="music.mp3" type="audio/mpeg">
     </audio>
 
     <div id="entry-screen">
@@ -185,47 +204,40 @@
     <div id="main-content">
         <section class="hero">
             <h1>HAPPY BIRTHDAY</h1>
-            <p style="font-size: 1.5rem; letter-spacing: 3px;">TO THE REALEST ONE</p>
-            <p>↓ Scroll for Memories ↓</p>
+            <p style="font-size: 1.5rem; letter-spacing: 3px; color: var(--neon-blue);">TO THE REALEST ONE</p>
+            <p style="margin-top: 20px; opacity: 0.6;">↓ Scroll for Memories ↓</p>
         </section>
 
         <div class="photo-grid">
-            <div class="photo-card">
-                <img src="pic1.jpg" alt="Memory">
-                <p>FOREVER CHAOS 🥂</p>
-            </div>
-            <div class="photo-card">
-                <img src="pic2.jpg" alt="Memory">
-                <p>MAIN CHARACTER ENERGY 💅</p>
-            </div>
-              <div class="photo-card">
-                <img src="pic3.jpg" alt="Memory">
-                <p>MTOTO MSUMBUFU 💅</p>
-            </div>
-              <div class="photo-card">
-                <img src="pic4.jpg" alt="Memory">
-                <p>MY PETITE BAE 💅</p>
-            </div>
-              <div class="photo-card">
-                <img src="pic5.jpg" alt="Memory">
-                <p>I HATE YAH💅</p>
-            </div>
+            <div class="photo-card"><img src="pic1.jpg" alt="Memory"><p>FOREVER CHAOS 🥂</p></div>
+            <div class="photo-card"><img src="pic2.jpg" alt="Memory"><p>MAIN CHARACTER ENERGY 💅</p></div>
+            <div class="photo-card"><img src="pic3.jpg" alt="Memory"><p>MTOTO MSUMBUFU 💅</p></div>
+            <div class="photo-card"><img src="pic4.jpg" alt="Memory"><p>MY PETITE BAE 💅</p></div>
+            <div class="photo-card"><img src="pic5.jpg" alt="Memory"><p>I HATE YAH💅</p></div>
         </div>
 
         <section class="gift-section">
-            <h2 style="font-family: 'Syncopate'; color: var(--neon-blue);">REVEAL YOUR GIFTS</h2>
-            <div class="gift-box" onclick="revealGift(this, 'VIP CONCERT DATE 🎫')">🎁</div>
-            <div class="gift-box" onclick="revealGift(this, 'SHOPPING SPREE 🛍️')">🎁</div>
+            <h2 style="font-family: 'Syncopate'; color: var(--neon-blue);">REVEAL YOUR GIFT</h2>
+            <p style="opacity: 0.7;">Choose wisely... you can only open one!</p>
+            <div class="gift-box" onclick="revealGift(this, 'ICECREAM DATE 🎫')">🎁</div>
+            <div class="gift-box" onclick="revealGift(this, 'SLEEPOVER 🛍️')">🎁</div>
         </section>
+
+        <section class="letter-section">
+            <h3 style="font-family: 'Syncopate'; color: var(--neon-pink); margin-bottom: 30px;">A Note for You...</h3>
+            <div id="typewriter"></div>
+        </section>
+        
+        <p style="text-align: center; padding: 50px; opacity: 0.3; font-size: 0.8rem;">Made with love by your Bestie</p>
     </div>
 
     <script>
+        let giftChosen = false;
+
         function startExperience() {
-            // Play Music
             const audio = document.getElementById('bday-music');
             audio.play().catch(e => console.log("Audio play blocked"));
 
-            // Switch Screen
             document.getElementById('entry-screen').style.opacity = '0';
             setTimeout(() => {
                 document.getElementById('entry-screen').style.display = 'none';
@@ -237,11 +249,9 @@
         function runCountdown() {
             let timeLeft = 5;
             const display = document.getElementById('countdown');
-            
             const timer = setInterval(() => {
                 timeLeft--;
                 display.innerText = timeLeft;
-                
                 if (timeLeft <= 0) {
                     clearInterval(timer);
                     showApp();
@@ -253,22 +263,53 @@
             document.getElementById('loading-screen').style.display = 'none';
             document.getElementById('main-content').style.display = 'block';
             document.body.style.overflow = 'auto';
-
-            // Epic Confetti
-            confetti({
-                particleCount: 150,
-                spread: 70,
-                origin: { y: 0.6 },
-                colors: ['#ff00ff', '#00f2ff', '#ffffff']
-            });
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#ff00ff', '#00f2ff', '#ffffff'] });
         }
 
         function revealGift(el, msg) {
+            if (giftChosen) return;
+            giftChosen = true;
+            
             el.innerHTML = `<span style="font-size: 1rem; color: var(--neon-blue); line-height: 1.2; display: inline-block; padding: 10px;">${msg}</span>`;
             el.style.borderStyle = "solid";
-            el.style.boxShadow = "0 0 20px var(--neon-blue)";
-            confetti({ particleCount: 30, spread: 50 });
+            el.style.boxShadow = "0 0 30px var(--neon-pink)";
+            
+            const gifts = document.querySelectorAll('.gift-box');
+            gifts.forEach(gift => { if (gift !== el) gift.classList.add('disabled-gift'); });
+            
+            confetti({ particleCount: 100, spread: 70, colors: ['#ff00ff'] });
         }
+
+        // --- TYPEWRITER CONTENT ---
+        const message = `To my absolute favorite person,
+
+Happy Birthday! 🎂
+
+I wanted to make something as unique and chaotic as our friendship. Thank you for being the one who always has my back, for the endless laughs, and for being the 'realest' person I know. 
+
+Whether we're causing chaos or just vibing, life is 100x better with you in it. Here's to more memories, more ice cream dates, and another year of being iconic.
+
+Love you always, Bestie! ❤️`;
+
+        let i = 0;
+        let started = false;
+
+        function typeWriter() {
+            if (i < message.length) {
+                document.getElementById("typewriter").innerHTML += message.charAt(i);
+                i++;
+                setTimeout(typeWriter, 50);
+            }
+        }
+
+        document.getElementById('main-content').onscroll = function() {
+            let section = document.querySelector('.letter-section');
+            let position = section.getBoundingClientRect();
+            if (position.top < window.innerHeight && !started) {
+                started = true;
+                typeWriter();
+            }
+        };
     </script>
 </body>
 </html>
