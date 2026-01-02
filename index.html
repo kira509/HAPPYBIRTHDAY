@@ -183,6 +183,26 @@
             text-shadow: 0 0 5px rgba(0, 242, 255, 0.3);
             white-space: pre-wrap;
         }
+
+        /* --- VOLUME CONTROLLER --- */
+        .volume-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 10000;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 15px;
+            border-radius: 50px;
+            border: 1px solid var(--neon-blue);
+            display: none;
+            align-items: center;
+            gap: 10px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 15px var(--neon-blue);
+        }
+
+        #mute-btn { background: none; border: none; color: var(--neon-pink); font-size: 1.2rem; cursor: pointer; }
+        #volume-slider { width: 70px; cursor: pointer; accent-color: var(--neon-pink); }
     </style>
 </head>
 <body>
@@ -190,6 +210,11 @@
     <audio id="bday-music" loop>
         <source src="ruger_snapchat_official_lyric_video_aac_35446.m4a" type="audio/mpeg">
     </audio>
+
+    <div id="vol-ctrl" class="volume-controls">
+        <button id="mute-btn" onclick="toggleMute()">🔊</button>
+        <input type="range" id="volume-slider" min="0" max="1" step="0.1" value="0.8" oninput="changeVolume(this.value)">
+    </div>
 
     <div id="entry-screen">
         <button class="btn-neon" onclick="startExperience()">CLICK HERE BESS</button>
@@ -262,6 +287,7 @@
         function showApp() {
             document.getElementById('loading-screen').style.display = 'none';
             document.getElementById('main-content').style.display = 'block';
+            document.getElementById('vol-ctrl').style.display = 'flex';
             document.body.style.overflow = 'auto';
             confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#ff00ff', '#00f2ff', '#ffffff'] });
         }
@@ -280,16 +306,32 @@
             confetti({ particleCount: 100, spread: 70, colors: ['#ff00ff'] });
         }
 
-        // --- TYPEWRITER CONTENT ---
+        function changeVolume(val) {
+            const audio = document.getElementById('bday-music');
+            audio.volume = val;
+        }
+
+        function toggleMute() {
+            const audio = document.getElementById('bday-music');
+            const btn = document.getElementById('mute-btn');
+            if (audio.muted) { audio.muted = false; btn.innerText = "🔊"; }
+            else { audio.muted = true; btn.innerText = "🔇"; }
+        }
+
+        // --- EXTENDED TYPEWRITER CONTENT ---
         const message = `To my absolute favorite person,
 
 Happy Birthday! 🎂
 
-I wanted to make something as unique and chaotic as our friendship. Thank you for being the one who always has my back, for the endless laughs, and for being the 'realest' person I know. 
+I wanted to make something as unique and chaotic as our friendship. Looking back, it’s not just about the big moments, but the small ones where we didn't have to say a word to know exactly what the other was thinking. 
 
-Whether we're causing chaos or just vibing, life is 100x better with you in it. Here's to more memories, more ice cream dates, and another year of being iconic.
+Thank you for being the person I can call anytime, the one who knows all my moods, and the only person who truly gets my energy. You are the 'realest' person I know in a world that often feels fake. 
 
-Love you always, Bestie! ❤️`;
+Whether we're causing absolute chaos, having deep midnight talks, or just vibing, life is 100x better with you in it. Here's to more memories, more ice cream dates, and another year of being iconic. 
+
+You deserve the world, but until I can get you that, I hope this little corner of the internet makes you smile.
+
+Love you forever, Bestie! ❤️`;
 
         let i = 0;
         let started = false;
@@ -298,7 +340,7 @@ Love you always, Bestie! ❤️`;
             if (i < message.length) {
                 document.getElementById("typewriter").innerHTML += message.charAt(i);
                 i++;
-                setTimeout(typeWriter, 50);
+                setTimeout(typeWriter, 45);
             }
         }
 
