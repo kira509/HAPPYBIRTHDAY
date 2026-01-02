@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Experience ⚡</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    
+    <style>
+        :root {
+            --neon-pink: #ff00ff;
+            --neon-blue: #00f2ff;
+            --bg-dark: #050505;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-dark);
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden;
+        }
+
+        /* --- STAGE 1: NEON ENTRY --- */
+        #entry-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            transition: 0.8s ease-out;
+        }
+
+        .btn-neon {
+            padding: 25px 60px;
+            font-family: 'Syncopate';
+            background: transparent;
+            color: var(--neon-blue);
+            border: 4px solid var(--neon-blue);
+            font-size: 1.8rem;
+            cursor: pointer;
+            box-shadow: 0 0 20px var(--neon-blue), inset 0 0 10px var(--neon-blue);
+            transition: 0.4s;
+            text-transform: uppercase;
+        }
+
+        .btn-neon:hover {
+            background: var(--neon-blue);
+            color: black;
+            box-shadow: 0 0 60px var(--neon-blue);
+        }
+
+        /* --- STAGE 2: LOADING SCREEN --- */
+        #loading-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 8888;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background-size: cover;
+            background-position: center;
+            /* REPLACE URL BELOW */
+            background-image: url('YOUR_BESTIE_PHOTO.jpg'); 
+        }
+        
+        #loading-screen::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7); /* Darkens her photo slightly */
+            z-index: -1;
+        }
+
+        #countdown {
+            font-family: 'Syncopate';
+            font-size: 8rem;
+            color: var(--neon-pink);
+            text-shadow: 0 0 30px var(--neon-pink);
+        }
+
+        /* --- STAGE 3: THE MAIN APP --- */
+        #main-content {
+            display: none;
+            height: 100vh;
+            overflow-y: auto;
+            background: linear-gradient(to bottom, #0a0a0c, #1a1a2e);
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Syncopate';
+            font-size: clamp(2rem, 10vw, 5rem);
+            margin: 0;
+            background: linear-gradient(to right, var(--neon-pink), var(--neon-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 10px var(--neon-pink));
+        }
+
+        .photo-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            padding: 50px;
+        }
+
+        .photo-card {
+            width: 300px;
+            background: #111;
+            padding: 15px;
+            border: 1px solid var(--neon-blue);
+            transition: 0.5s;
+            cursor: pointer;
+        }
+
+        .photo-card:hover {
+            transform: scale(1.05) rotate(2deg);
+            border-color: var(--neon-pink);
+            box-shadow: 0 0 40px var(--neon-pink);
+        }
+
+        .photo-card img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+        }
+
+        .gift-section {
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .gift-box {
+            display: inline-block;
+            width: 150px;
+            height: 150px;
+            border: 3px dashed var(--neon-pink);
+            margin: 20px;
+            line-height: 150px;
+            font-size: 3rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .gift-box:hover {
+            transform: bounce;
+            background: rgba(255, 0, 255, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bday-music" loop>
+        <source src="YOUR_MUSIC_FILE.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="entry-screen">
+        <button class="btn-neon" onclick="startExperience()">CLICK HERE BESS</button>
+        <p style="color: var(--neon-pink); margin-top: 20px; letter-spacing: 5px;">BESTIE EDITION v1.0</p>
+    </div>
+
+    <div id="loading-screen">
+        <p style="font-family: 'Syncopate'; letter-spacing: 10px;">LOADING VIBES</p>
+        <div id="countdown">5</div>
+    </div>
+
+    <div id="main-content">
+        <section class="hero">
+            <h1>HAPPY BIRTHDAY</h1>
+            <p style="font-size: 1.5rem; letter-spacing: 3px;">TO THE REALEST ONE</p>
+            <p>↓ Scroll for Memories ↓</p>
+        </section>
+
+        <div class="photo-grid">
+            <div class="photo-card">
+                <img src="https://via.placeholder.com/300x400" alt="Memory">
+                <p>FOREVER CHAOS 🥂</p>
+            </div>
+            <div class="photo-card">
+                <img src="https://via.placeholder.com/300x400" alt="Memory">
+                <p>MAIN CHARACTER ENERGY 💅</p>
+            </div>
+        </div>
+
+        <section class="gift-section">
+            <h2 style="font-family: 'Syncopate'; color: var(--neon-blue);">REVEAL YOUR GIFTS</h2>
+            <div class="gift-box" onclick="revealGift(this, 'VIP CONCERT DATE 🎫')">🎁</div>
+            <div class="gift-box" onclick="revealGift(this, 'SHOPPING SPREE 🛍️')">🎁</div>
+        </section>
+    </div>
+
+    <script>
+        function startExperience() {
+            // Play Music
+            const audio = document.getElementById('bday-music');
+            audio.play().catch(e => console.log("Audio play blocked"));
+
+            // Switch Screen
+            document.getElementById('entry-screen').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('entry-screen').style.display = 'none';
+                document.getElementById('loading-screen').style.display = 'flex';
+                runCountdown();
+            }, 800);
+        }
+
+        function runCountdown() {
+            let timeLeft = 5;
+            const display = document.getElementById('countdown');
+            
+            const timer = setInterval(() => {
+                timeLeft--;
+                display.innerText = timeLeft;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    showApp();
+                }
+            }, 1000);
+        }
+
+        function showApp() {
+            document.getElementById('loading-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+            document.body.style.overflow = 'auto';
+
+            // Epic Confetti
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#ff00ff', '#00f2ff', '#ffffff']
+            });
+        }
+
+        function revealGift(el, msg) {
+            el.innerHTML = `<span style="font-size: 1rem; color: var(--neon-blue); line-height: 1.2; display: inline-block; padding: 10px;">${msg}</span>`;
+            el.style.borderStyle = "solid";
+            el.style.boxShadow = "0 0 20px var(--neon-blue)";
+            confetti({ particleCount: 30, spread: 50 });
+        }
+    </script>
+</body>
+</html>
